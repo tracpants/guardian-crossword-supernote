@@ -75,3 +75,8 @@ crontab -e
 **Command not found**: Run `pip install .` again
 
 For more options: `guardian-crossword --help`
+
+## Acknowledgements
+
+- [The Guardian](https://www.theguardian.com/crosswords) for providing freely accessible crossword PDFs
+- [Julian Prester](https://github.com/julianprester) for the [sncloud](https://github.com/julianprester/sncloud) Python library that enables SuperNote cloud integration
