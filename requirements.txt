@@ -1,0 +1,3 @@
+sncloud==0.2.1
+python-dotenv==1.1.1
+requests==2.32.4
