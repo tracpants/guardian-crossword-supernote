@@ -55,8 +55,8 @@ To automatically download crosswords daily, add to your crontab:
 # Edit crontab
 crontab -e
 
-# Add this line to download at 9 AM daily
-0 9 * * * /usr/local/bin/guardian-crossword --today
+# Add this line to download at 9:30 AM daily
+30 9 * * * /usr/local/bin/guardian-crossword --today
 ```
 
 **Note**: Use full paths in cron jobs. Find your path with `which guardian-crossword`
