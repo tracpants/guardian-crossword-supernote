@@ -18,28 +18,61 @@ pip install -r requirements.txt
 cp .env.template .env
 # Edit .env with SuperNote email and password
 
-# Run the application
-python main.py --today                    # Download today's crosswords
-python main.py --date 2025-01-15          # Download for specific date
-python main.py --date 2025-01-15 --type quick  # Download specific type
-python main.py --cleanup                  # Clean old files
-python main.py --info                     # Show storage info
-python main.py --no-upload               # Download only, no upload
+# Install package in development mode
+pip install -e .
+
+# Run the application (multiple options)
+guardian-crossword --today                         # Using installed command
+python -m guardian_crossword --today               # Using module
+python -m src.guardian_crossword.cli --today       # Direct module path
+./scripts/guardian-crossword --today               # Using script
+
+# Common operations
+guardian-crossword --date 2025-01-15               # Download for specific date
+guardian-crossword --date 2025-01-15 --type quick  # Download specific type
+guardian-crossword --cleanup                       # Clean old files
+guardian-crossword --info                          # Show storage info
+guardian-crossword --no-upload                     # Download only, no upload
 
 # Cleanup operations
-python main.py --cleanup --auto-cleanup   # Auto-confirm cleanup
-python main.py --cleanup --dry-run        # Preview cleanup without deletion
+guardian-crossword --cleanup --auto-cleanup        # Auto-confirm cleanup
+guardian-crossword --cleanup --dry-run             # Preview cleanup without deletion
+
+# Package management
+pip install .                                      # Install package
+pip install -e .                                   # Install in development mode
+python -m build                                    # Build distribution packages
 ```
 
 ## Architecture
 
 The application uses a modular architecture with clear separation of concerns:
 
+### Project Structure
+
+```
+guardian-crossword-supernote/
+├── src/guardian_crossword/     # Main package
+│   ├── __init__.py            # Package metadata
+│   ├── __main__.py            # Entry point for python -m guardian_crossword
+│   ├── cli.py                 # CLI interface and main orchestration
+│   ├── config.py              # Configuration constants and settings
+│   ├── downloader.py          # Guardian crossword downloader
+│   ├── client.py              # SuperNote cloud client
+│   └── file_manager.py        # Local file management
+├── scripts/                   # Executable scripts
+│   └── guardian-crossword     # Direct executable script
+├── tests/                     # Test directory
+├── pyproject.toml             # Modern Python packaging config
+├── requirements.txt           # Dependencies
+└── docs/                      # Documentation files
+```
+
 ### Core Modules
 
-- **main.py**: Main orchestrator script handling CLI arguments, credential loading, and workflow coordination
-- **guardian_downloader.py**: Downloads crossword PDFs from The Guardian using requests with retry logic and fallback mechanisms
-- **supernote_client.py**: Manages SuperNote cloud authentication and file operations using the sncloud library
+- **cli.py**: Main CLI interface handling arguments, credential loading, and workflow coordination
+- **downloader.py**: Downloads crossword PDFs from The Guardian using requests with retry logic and fallback mechanisms
+- **client.py**: Manages SuperNote cloud authentication and file operations using the sncloud library
 - **file_manager.py**: Handles local file management, validation, cleanup, and storage tracking
 - **config.py**: Centralized configuration including URL patterns, retention policies, and puzzle type schedules
 
