@@ -12,16 +12,21 @@ pip install .
 
 ## Setup
 
-1. Copy the environment template:
-   ```bash
-   cp .env.template .env
-   ```
+**Option 1: Environment Variables (Recommended)**
+```bash
+# Add to your shell profile (~/.bashrc, ~/.zshrc, etc.)
+export SUPERNOTE_EMAIL="your_email@example.com"
+export SUPERNOTE_PASSWORD="your_password_here"
 
-2. Edit `.env` with your SuperNote credentials:
-   ```
-   SUPERNOTE_EMAIL=your_email@example.com
-   SUPERNOTE_PASSWORD=your_password_here
-   ```
+# Then reload your shell or run:
+source ~/.bashrc  # or ~/.zshrc
+```
+
+**Option 2: .env File**
+```bash
+cp .env.template .env
+# Edit .env with your SuperNote credentials
+```
 
 ## Usage
 

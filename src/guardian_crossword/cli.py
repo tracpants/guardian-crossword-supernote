@@ -20,15 +20,20 @@ from .config import (
 
 
 def load_credentials() -> tuple[str, str]:
-    """Load SuperNote credentials from environment variables."""
-    load_dotenv(ENV_FILE)
+    """Load SuperNote credentials from .env file or environment variables."""
+    # Try loading from .env file in current directory first
+    if os.path.exists(ENV_FILE):
+        load_dotenv(ENV_FILE)
     
+    # Get credentials from environment (either from .env or system environment)
     email = os.getenv(SUPERNOTE_EMAIL_KEY)
     password = os.getenv(SUPERNOTE_PASSWORD_KEY)
     
     if not email or not password:
-        print(f"❌ Error: SuperNote credentials not found in {ENV_FILE}")
-        print(f"Please set {SUPERNOTE_EMAIL_KEY} and {SUPERNOTE_PASSWORD_KEY}")
+        print(f"❌ Error: SuperNote credentials not found")
+        print(f"Please either:")
+        print(f"  1. Create a .env file with {SUPERNOTE_EMAIL_KEY} and {SUPERNOTE_PASSWORD_KEY}")
+        print(f"  2. Set environment variables: export {SUPERNOTE_EMAIL_KEY}='...' {SUPERNOTE_PASSWORD_KEY}='...'")
         sys.exit(1)
     
     return email, password
