@@ -42,6 +42,20 @@ guardian-crossword --info
 guardian-crossword --cleanup
 ```
 
+## Automation
+
+To automatically download crosswords daily, add to your crontab:
+
+```bash
+# Edit crontab
+crontab -e
+
+# Add this line to download at 9 AM daily
+0 9 * * * /usr/local/bin/guardian-crossword --today
+```
+
+**Note**: Use full paths in cron jobs. Find your path with `which guardian-crossword`
+
 ## Puzzle Types
 
 - `quick` - Quick Crossword (Mon-Sat)
