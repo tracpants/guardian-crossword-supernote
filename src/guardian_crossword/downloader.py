@@ -11,14 +11,21 @@ from typing import Optional, List, Tuple
 from .config import (
     GUARDIAN_BASE_URL, GUARDIAN_URL_PATTERN, GUARDIAN_PUZZLE_TYPES,
     FILENAME_PATTERN, MAX_RETRIES, RETRY_DELAY, REQUEST_TIMEOUT,
-    FALLBACK_DAYS, DOWNLOADS_DIR
+    FALLBACK_DAYS
 )
 
 
 class GuardianDownloader:
     """Handles downloading Guardian crossword PDFs."""
     
-    def __init__(self):
+    def __init__(self, downloads_dir: str = "downloads"):
+        """
+        Initialize downloader with downloads directory.
+        
+        Args:
+            downloads_dir: Directory to save downloaded files
+        """
+        self.downloads_dir = downloads_dir
         self.session = requests.Session()
         self.session.headers.update({
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36'
@@ -124,7 +131,7 @@ class GuardianDownloader:
             return None
         
         # Ensure downloads directory exists
-        os.makedirs(DOWNLOADS_DIR, exist_ok=True)
+        os.makedirs(self.downloads_dir, exist_ok=True)
         
         # Get fallback dates (including target date)
         fallback_dates = self.get_fallback_dates(puzzle_type, target_date)
@@ -137,7 +144,7 @@ class GuardianDownloader:
         for date in fallback_dates:
             url = self.generate_url(puzzle_type, date)
             filename = self.generate_filename(puzzle_type, date)
-            filepath = os.path.join(DOWNLOADS_DIR, filename)
+            filepath = os.path.join(self.downloads_dir, filename)
             
             # Check if file already exists locally
             if os.path.exists(filepath) and self.validate_pdf(filepath):

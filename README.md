@@ -40,6 +40,9 @@ guardian-crossword --date 2025-01-15
 # Download specific puzzle type
 guardian-crossword --today --type quick
 
+# Use custom download directory
+guardian-crossword --today --downloads-dir ~/Downloads
+
 # Show storage info
 guardian-crossword --info
 
@@ -55,8 +58,14 @@ To automatically download crosswords daily, add to your crontab:
 # Edit crontab
 crontab -e
 
-# Add this line to download at 9:30 AM daily
+# Add this line to download at 9:30 AM daily to default location
 30 9 * * * /usr/local/bin/guardian-crossword --today
+
+# Or download to a specific directory (e.g., Downloads folder)
+30 9 * * * /usr/local/bin/guardian-crossword --today --downloads-dir ~/Downloads
+
+# You can also use environment variables for the download directory
+30 9 * * * GUARDIAN_DOWNLOADS_DIR=~/Downloads /usr/local/bin/guardian-crossword --today
 ```
 
 **Note**: Use full paths in cron jobs. Find your path with `which guardian-crossword`

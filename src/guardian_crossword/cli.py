@@ -15,7 +15,7 @@ from .file_manager import FileManager
 from .config import (
     GUARDIAN_PUZZLE_TYPES, ENV_FILE,
     SUPERNOTE_EMAIL_KEY, SUPERNOTE_PASSWORD_KEY,
-    SUPERNOTE_PUZZLES_DIR
+    SUPERNOTE_PUZZLES_DIR, get_downloads_dir
 )
 
 
@@ -90,11 +90,13 @@ Examples:
                        help='Skip confirmation prompts for cleanup operations')
     parser.add_argument('--dry-run', action='store_true',
                        help='Show what would be cleaned up without actually deleting')
+    parser.add_argument('--downloads-dir', type=str,
+                       help='Custom downloads directory (supports ~/Downloads, absolute paths, etc.)')
     
     args = parser.parse_args()
     
     # Initialize components
-    file_manager = FileManager()
+    file_manager = FileManager(downloads_dir=args.downloads_dir)
     
     # Handle info request
     if args.info:
@@ -140,7 +142,7 @@ Examples:
         print()  # Add spacing only if cleanup messages were shown
     
     # Initialize downloader
-    downloader = GuardianDownloader()
+    downloader = GuardianDownloader(downloads_dir=file_manager.downloads_dir)
     
     # Determine which puzzle types to download
     if args.type:

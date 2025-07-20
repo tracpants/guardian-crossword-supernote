@@ -10,7 +10,33 @@ MAX_LOCAL_FILES = 150          # Fallback limit (very generous)
 MAX_CLOUD_FILES = 400          # Fallback limit (very generous)
 
 # Directory paths
-DOWNLOADS_DIR = "downloads"
+import os
+
+def get_downloads_dir(custom_dir: str = None) -> str:
+    """
+    Get the downloads directory path with support for custom directories.
+    
+    Args:
+        custom_dir: Custom directory path (can be relative or absolute)
+        
+    Returns:
+        Absolute path to downloads directory
+    """
+    if custom_dir:
+        # Expand user home directory (~) and environment variables
+        expanded_path = os.path.expanduser(os.path.expandvars(custom_dir))
+        return os.path.abspath(expanded_path)
+    
+    # Check for environment variable
+    env_dir = os.getenv('GUARDIAN_DOWNLOADS_DIR')
+    if env_dir:
+        expanded_path = os.path.expanduser(os.path.expandvars(env_dir))
+        return os.path.abspath(expanded_path)
+    
+    # Default to relative downloads directory
+    return "downloads"
+
+DOWNLOADS_DIR = get_downloads_dir()  # Default value, can be overridden
 LOGS_DIR = "logs"
 SUPERNOTE_PUZZLES_DIR = "Document/puzzles"
 

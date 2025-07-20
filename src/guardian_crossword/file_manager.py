@@ -8,16 +8,22 @@ import glob
 from datetime import datetime
 from typing import List, Optional, Tuple
 from .config import (
-    DOWNLOADS_DIR, LOCAL_RETENTION_DAYS, MAX_LOCAL_FILES,
-    FILENAME_PATTERN
+    LOCAL_RETENTION_DAYS, MAX_LOCAL_FILES,
+    FILENAME_PATTERN, get_downloads_dir
 )
 
 
 class FileManager:
     """Handles local file management operations."""
     
-    def __init__(self):
-        self.downloads_dir = DOWNLOADS_DIR
+    def __init__(self, downloads_dir: str = None):
+        """
+        Initialize FileManager with optional custom downloads directory.
+        
+        Args:
+            downloads_dir: Custom downloads directory path (supports ~ expansion)
+        """
+        self.downloads_dir = get_downloads_dir(downloads_dir)
         os.makedirs(self.downloads_dir, exist_ok=True)
     
     def get_local_files(self) -> List[str]:
